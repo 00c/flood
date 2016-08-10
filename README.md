@@ -1,2 +1,2 @@
 # flood
-minetest flood protection mod
+minetest flood protection mod created by Krock
