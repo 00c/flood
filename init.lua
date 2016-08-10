@@ -9,12 +9,18 @@ local player_spam = {}
 local CHAR_REPEAT_MAX = 4
 
 minetest.register_on_chat_message(function(name, msg)
-	if msg == "" or msg:sub(1, 1) == '/' then
-		return
+	-- Mod behavior on empty, slash or no-shout messages
+	-- returns put to false to feed msg to default mod
+	-- return of empty or slash msg was "return"
+	
+	if msg == "" or msg:sub(1, 1) == '/' then	
+		return false
 	end
+	
 	if not minetest.check_player_privs(name, {shout = true}) then
-		minetest.chat_send_player(name, "You can not chat. Missing privilege: shout")
-		return true
+		-- With return false it feeds the msg to default, no need to duplicate error msg
+		-- minetest.chat_send_player(name, "You can not chat. Missing privilege: shout")
+		return false
 	end
 
 	local count_as_messages = math.max(1, math.min(msg:len() / 100, 5))
