@@ -9,6 +9,14 @@ local player_spam = {}
 local CHAR_REPEAT_MAX = 4
 
 minetest.register_on_chat_message(function(name, msg)
+	if msg == "" or msg:sub(1, 1) == '/' then
+		return
+	end
+	if not minetest.check_player_privs(name, {shout = true}) then
+		minetest.chat_send_player(name, "You can not chat. Missing privilege: shout")
+		return true
+	end
+
 	local count_as_messages = math.max(1, math.min(msg:len() / 100, 5))
     player_spam[name] = (player_spam[name] or 0) + math.floor(count_as_messages + 0.5) 
 
@@ -43,7 +51,10 @@ minetest.register_on_chat_message(function(name, msg)
             new_msg = new_msg .. c
         end
     end
-
+	if new_msg == msg then
+		return -- Nothing to replace (message ok)
+	end
+	
     for i, player in pairs(minetest.get_connected_players()) do
         local player_name = player:get_player_name()
         if player_name ~= name then
