@@ -60,7 +60,13 @@ minetest.register_on_chat_message(function(name, msg)
 	if new_msg == msg then
 		return -- Nothing to replace (message ok)
 	end
+
+	-- HIGHLY EXPERIMENTAL - once the message is checked as good
+	-- feed it directly to default chat mod
+	-- enable comments VANILLA_CHAT_SEND_PART and uncomment
+	-- the commented return false to enable
 	
+	--	--[[	VANILLA_CHAT_SEND_PART START
     for i, player in pairs(minetest.get_connected_players()) do
         local player_name = player:get_player_name()
         if player_name ~= name then
@@ -71,6 +77,11 @@ minetest.register_on_chat_message(function(name, msg)
     --    minetest.chat_send_player(name, "Your message was shortened a bit to prevent from spam.")
     --end
     return true
+    -- VANILLA_CHAT_SEND_PART END
+     --]]
+     
+     -- return false
+     
 end)
 
 local timed = 0
